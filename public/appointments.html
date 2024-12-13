@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Appointments - TeleMed</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="logo.png" type="image/x-icon"/>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="TeleMed Logo" class="logo-img">
+        </div>
+        <h1>TeleMed: Your Virtual Healthcare Platform</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+        <button class="hamburger-menu">&#9776;</button>
+    </nav>
+
+    <div class="container">
+        <main class="content">
+            <section id="main-content">
+                <h2>Your Appointments</h2>
+                <p>Below are your upcoming appointments:</p>
+                <table id="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Appointments will be populated here by JavaScript -->
+                    </tbody>
+                </table>
+                <button id="book-appointment">Book New Appointment</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TeleMed. All rights reserved.</p>
+        <div class="social-links">
+            <a href="http://www.facebook.com/Sincere King Imran ">Facebook</a>
+            <a href="http://www.twitter.com/@kam3Imran">Twitter</a>
+            <a href="http://www.linkedin.com/in/hassan-imran-kamara">LinkedIn</a>>
+        </div>
+        <p>Contact Us: support@telemed.com</p>
+    </footer>
+
+    <script>
+        // JavaScript to handle fetching appointments (this should be enhanced)
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAppointments();
+        });
+
+        function fetchAppointments() {
+            // Replace with your actual API endpoint
+            fetch('/appointments')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#appointments-table tbody');
+                    tableBody.innerHTML = ''; // Clear the existing appointments
+                    data.forEach(appointment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${appointment.doctor_name}</td>
+                            <td>${appointment.appointment_date}</td>
+                            <td>${appointment.appointment_time}</td>
+                            <td>${appointment.status}</td>
+                            <td>
+                                <button onclick="cancelAppointment(${appointment.id})">Cancel</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching appointments:', error));
+        }
+
+        function cancelAppointment(id) {
+            // Implement cancel appointment functionality
+            fetch(`/appointments/${id}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        fetchAppointments(); // Refresh appointments
+                    } else {
+                        alert('Failed to cancel appointment');
+                    }
+                });
+        }
+    </script>
+</body>
+</html>

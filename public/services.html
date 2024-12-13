@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Our Services - TeleMed</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="logo.png" type="image/x-icon"/>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="TeleMed Logo" class="logo-img">
+        </div>
+        <h1>Our Services</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+        <button class="hamburger-menu">&#9776;</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main class="content">
+            <section id="main-content">
+                <h2>Welcome to TeleMed</h2>
+                <p>At TeleMed, we offer a range of telemedicine services designed to make healthcare more accessible to everyone. Our platform connects patients with qualified healthcare providers from the comfort of their homes.</p>
+                
+                <section id="services">
+                    <h3>Our Services</h3>
+                    <div class="services-container">
+                        <div class="service-card">
+                            <img src="images/hassan.jpg" alt="Virtual Consultations" class="service-icon">
+                            <h4>Virtual Consultations</h4>
+                            <p>Meet with doctors via video call for consultations and follow-ups.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/imran.png" alt="Health Assessments" class="service-icon">
+                            <h4>Health Assessments</h4>
+                            <p>Comprehensive health assessments to understand your health needs better.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/imran.png" alt="Prescription Management" class="service-icon">
+                            <h4>Prescription Management</h4>
+                            <p>Get prescriptions and medication refills online.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/hassan.jpg" alt="Appointment Scheduling" class="service-icon">
+                            <h4>Appointment Scheduling</h4>
+                            <p>Book, reschedule, or cancel appointments easily through our platform.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/imran.png" alt="24/7 Support" class="service-icon">
+                            <h4>24/7 Support</h4>
+                            <p>Access to healthcare support anytime, anywhere.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/imran.png" alt="Specialist Referrals" class="service-icon">
+                            <h4>Specialist Referrals</h4>
+                            <p>Get referred to specialists based on your health needs.</p>
+                        </div>
+                        <div class="service-card">
+                            <img src="images/hassan.jpg" alt="Health Records Management" class="service-icon">
+                            <h4>Health Records Management</h4>
+                            <p>Securely manage and access your health records online.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="testimonials-slider">
+                    <h3>What Our Users Say</h3>
+                    <div class="slider">
+                        <div class="slide">
+                            <p>"TeleMed has made it so easy to schedule appointments and consult with my doctor. Highly recommended!"</p>
+                            <h4>- Imran Doe</h4>
+                        </div>
+                        <div class="slide">
+                            <p>"Fantastic platform! I was able to find a specialist in no time and get the treatment I needed."</p>
+                            <h4>- Sincere King Imran</h4>
+                        </div>
+                        <!-- Add more slides as needed -->
+                    </div>
+                </section>
+                
+                <section id="newsletter">
+                    <h3>Subscribe to Our Newsletter</h3>
+                    <form action="/subscribe" method="POST">
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TeleMed. All rights reserved.</p>
+        <div class="social-links">
+            <a href="http://www.facebook.com/Sincere King Imran ">Facebook</a>
+            <a href="http://www.twitter.com/@kam3Imran">Twitter</a>
+            <a href="http://www.linkedin.com/in/hassan-imran-kamara">LinkedIn</a
+        </div>
+        <p>Contact Us: support@telemed.com</p>
+    </footer>
+
+    <script>
+        // JavaScript for hamburger menu toggle
+        const menuButton = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuButton.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // JavaScript for testimonials slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 3000); // Change slide every 3 seconds
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
