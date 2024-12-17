@@ -7,6 +7,90 @@
     <title>Login - TeleMed</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="logo.png" type="image/x-icon"/>
+    <style>
+        /* Additional Styles for Enhanced UI */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #main-content {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        #main-content h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 35%;
+            transform: translateY(-50%);
+        }
+        .forgot-password {
+            margin: 10px 0;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+        .forgot-password a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .password-strength {
+            height: 5px;
+            margin: 10px 0;
+            border-radius: 3px;
+            background: #ddd;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            background: red;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -28,62 +112,104 @@
         <button class="hamburger-menu">&#9776;</button>
     </nav>
 
+    <!-- Main Login Form -->
     <div class="container">
-        <main class="content">
-            <section id="main-content">
-                <h2>Login to Your Account</h2>
-                <form id="login-form">
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
+        <section id="main-content">
+            <h2>Login to Your Account</h2>
+            <form id="login-form">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+                <div style="position: relative;">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    <span class="toggle-password" id="togglePassword">👁</span>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
                     </div>
-                    <div>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="rememberMe"> Remember Me
+                    </label>
+                    <div class="forgot-password">
+                        <a href="reset_password.html">Forgot Password?</a>
                     </div>
-                    <button type="submit">Login</button>
-                </form>
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
-            </section>
-        </main>
+                    
+                <button type="submit">Login</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+            <p>Don't have an account? <a href="register.html">Register here</a></p>
+        </section>
     </div>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 TeleMed. All rights reserved.</p>
         <div class="social-links">
-            <a href="http://www.facebook.com/Sincere King Imran ">Facebook</a>
+            <a href="http://www.facebook.com/SincereKingImran">Facebook</a>
             <a href="http://www.twitter.com/@kam3Imran">Twitter</a>
-            <a href="http://www.linkedin.com/in/hassan-imran-kamara">LinkedIn</a>>
+            <a href="http://www.linkedin.com/in/hassan-imran-kamara">LinkedIn</a>
         </div>
         <p>Contact Us: support@telemed.com</p>
     </footer>
 
     <script>
-        document.getElementById('login-form').addEventListener('submit', function (e) {
+        // Toggle Password Visibility
+        document.getElementById('togglePassword').addEventListener('click', () => {
+            const passwordField = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                togglePassword.textContent = '🙈';
+            } else {
+                passwordField.type = 'password';
+                togglePassword.textContent = '👁';
+            }
+        });
+
+        // Password Strength Meter
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+            if (password.length > 6) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 25;
+            if (/[@$!%*?&]/.test(password)) strength += 25;
+            strengthBar.style.width = strength + '%';
+            strengthBar.style.backgroundColor = strength < 50 ? 'red' : strength < 75 ? 'orange' : 'green';
+        });
+
+        // Form Validation and Submission
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
 
-            // Replace with your actual login API endpoint
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = 'appointments.html'; // Redirect to appointments page upon successful login
-                    } else {
-                        alert('Login failed. Please check your credentials and try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error logging in:', error);
-                    alert('An error occurred. Please try again later.');
+            // Simple Client-Side Validation
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in all fields.';
+                return;
+            }
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
                 });
+                if (response.ok) {
+                    window.location.href = 'appointments.html';
+                } else {
+                    errorMessage.textContent = 'Invalid email or password.';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred. Please try again.';
+            }
         });
     </script>
 </body>
