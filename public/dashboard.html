@@ -14,6 +14,7 @@
                 <li><a href="/admin/doctors">Manage Doctors</a></li>
                 <li><a href="/admin/patients">Manage Patients</a></li>
                 <li><a href="/admin/appointments">View Appointments</a></li>
+                <li><a href="/admin/reports">Reports</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </nav>
@@ -22,7 +23,84 @@
     <main>
         <h2>Welcome to the Admin Dashboard</h2>
         <p>Manage your telemedicine platform from here.</p>
-        <!-- Add more admin functionalities here -->
+
+        <!-- Statistics Section -->
+        <section id="statistics">
+            <h3>Platform Statistics</h3>
+            <div class="stats">
+                <div class="stat-item">
+                    <h4>Total Doctors</h4>
+                    <p>120</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Total Patients</h4>
+                    <p>450</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Appointments Today</h4>
+                    <p>30</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Pending Approvals</h4>
+                    <p>5</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notifications Section -->
+        <section id="notifications">
+            <h3>Recent Notifications</h3>
+            <ul>
+                <li>New patient registered: Imran Hassan</li>
+                <li>Doctor Jane Smith submitted a profile update for review.</li>
+                <li>Appointment scheduled: Dr. Adams with Sarah Lee</li>
+                <li>5 system messages pending.</li>
+            </ul>
+        </section>
+
+        <!-- Activity Log Section -->
+        <section id="activity-log">
+            <h3>Recent Activity</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10:00 AM</td>
+                        <td>Admin</td>
+                        <td>Logged in</td>
+                    </tr>
+                    <tr>
+                        <td>10:15 AM</td>
+                        <td>Dr. Smith</td>
+                        <td>Updated profile</td>
+                    </tr>
+                    <tr>
+                        <td>10:30 AM</td>
+                        <td>Sarah Lee</td>
+                        <td>Booked appointment</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Admin Tools Section -->
+        <section id="admin-tools">
+            <h3>Admin Tools</h3>
+            <button onclick="window.location.href='/admin/settings'">Platform Settings</button>
+            <button onclick="window.location.href='/admin/reports'">Generate Reports</button>
+            <button onclick="window.location.href='/admin/help'">Help & Support</button>
+        </section>
     </main>
+
+    <footer>
+        <p>&copy; 2024 TeleMed. All rights reserved.</p>
+        <p>Contact Support: <a href="mailto:support@telemed.com">support@telemed.com</a></p>
+    </footer>
 </body>
 </html>

@@ -1,4 +1,6 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
+const router = express.Router();
 const cors = require('cors');
 const mysql = require('mysql2');
 const session = require('express-session');
@@ -8,6 +10,7 @@ const patientRoutes = require('./routes/patientRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -17,6 +20,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use('/auth', authRoutes);
+app.use('/appointments', appointmentRoutes);
 
 // Sessions
 app.use(session({
@@ -41,9 +46,10 @@ app.use('/admin', adminRoutes);
 const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    password: process.env.DB_PASSWORD, 
     database: process.env.DB_NAME,
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

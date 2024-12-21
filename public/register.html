@@ -44,6 +44,21 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        #password-strength {
+            height: 10px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        #password-strength span {
+            display: block;
+            height: 100%;
+            border-radius: 5px;
+        }
+        #terms-checkbox {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -56,7 +71,8 @@
             <input type="text" name="last_name" placeholder="Last Name" required><br>
             <input type="text" name="username" placeholder="Username" required><br>
             <input type="email" name="email" placeholder="Email" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
+            <input type="password" id="password" name="password" placeholder="Password" required><br>
+            <div id="password-strength"><span></span></div>
             <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
             <input type="text" name="phone" placeholder="Phone" required><br>
             <input type="date" name="date_of_birth" required><br>
@@ -73,23 +89,29 @@
                 <!-- Add more countries as needed -->
             </select><br>
             
-            <label>
+            <label id="terms-checkbox">
                 <input type="checkbox" name="terms" required> I accept the terms and conditions
             </label><br>
-            <div class="g-recaptcha" data-sitekey="https://github.com/kingimrankamara/Final-Project-Telemedicine-"></div><br>
             <button type="submit">Register</button>
         </form>
     </main>
     <script src="js/main.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
     <script>
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
-
+    
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
-
+    
+            // Check for undefined values
+            for (const key in data) {
+                if (data[key] === '') {
+                    alert(`Please fill in the ${key} field`);
+                    return;
+                }
+            }
+    
             try {
                 const response = await fetch('/auth/register', {
                     method: 'POST',
@@ -98,7 +120,7 @@
                     },
                     body: JSON.stringify(data)
                 });
-
+    
                 if (response.ok) {
                     alert('Registration successful!');
                 } else {
@@ -110,6 +132,31 @@
                 alert('An error occurred during registration');
             }
         });
+
+        // Password Strength Indicator
+        const password = document.getElementById('password');
+        const passwordStrength = document.getElementById('password-strength').firstElementChild;
+
+        password.addEventListener('input', () => {
+            const strength = checkPasswordStrength(password.value);
+            passwordStrength.style.width = strength.percent + '%';
+            passwordStrength.style.backgroundColor = strength.color;
+        });
+
+        function checkPasswordStrength(password) {
+            let strength = { percent: 0, color: 'red' };
+
+            if (password.length > 5) strength.percent += 25;
+            if (password.match(/[A-Z]/)) strength.percent += 25;
+            if (password.match(/[a-z]/)) strength.percent += 25;
+            if (password.match(/[0-9]/)) strength.percent += 25;
+
+            if (strength.percent > 75) strength.color = 'green';
+            else if (strength.percent > 50) strength.color = 'orange';
+            else if (strength.percent > 25) strength.color = 'yellow';
+
+            return strength;
+        }
     </script>
 </body>
 </html>

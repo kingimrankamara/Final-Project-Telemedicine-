@@ -1,5 +1,6 @@
 const express = require('express');
-const pool = require('../config/db');
+const bcrypt = require('bcrypt');
+const pool = require('../config/db');                        
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -49,4 +50,41 @@ router.post('/reset_password', async (req, res) => {
     });
 });
 
+
+
+router.post('/register', async (req, res) => {
+    console.log(req.body); // Log the request body for debugging
+    try {
+        const { first_name, last_name, username, email, password, confirm_password, phone, date_of_birth, gender, address, country, terms } = req.body;
+
+        // Check for undefined values
+        if (!first_name || !last_name || !username || !email || !password || !confirm_password || !phone || !date_of_birth || !gender || !address || !country || !terms) {
+            return res.status(400).send('All fields are required');
+        }
+
+        // Check if passwords match
+        if (password !== confirm_password) {
+            return res.status(400).send('Passwords do not match');
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const sql = `INSERT INTO users (first_name, last_name, username, email, password, phone, date_of_birth, gender, address, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        
+        // Execute the SQL query
+        pool.execute(sql, [first_name, last_name, username, email, hashedPassword, phone, date_of_birth, gender, address, country], (err, result) => {
+            if (err) {
+                console.error('Error inserting user:', err);
+                return res.status(500).send('An error occurred during registration');
+            }
+            res.status(200).send('Registration successful');
+        });
+    } catch (err) {
+        console.error('Error during registration:', err);
+        res.status(500).send('An internal server error occurred');
+    }
+});
+
 module.exports = router;
+
